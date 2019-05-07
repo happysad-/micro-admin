@@ -8,7 +8,7 @@ NETSTAT=/bin/netstat
 LSB=/usr/bin/lsb_release
 
 # Output File: Will store all the information
-OUTPUT_FILE="network.$(hostname -f).$(date + '%d-%m-%y').log"
+OUTPUT_FILE="network.$(hostname -f).$(date '+%d-%m-%y_%H:%M:%S').log"
 
 check_root() {
     local meid=$(id -u)
