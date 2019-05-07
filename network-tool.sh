@@ -15,5 +15,19 @@ check_root() {
 
     if [ $meid -ne 0 ]; then
         echo "[ERR]: Need to run as root!"
+	exit 999
     fi
 }
+
+write_header() {
+    echo "__________________________________" >> $OUTPUT_FILE
+    echo "| $@" >> $OUTPUT_FILE
+    echo "__________________________________" >> $OUTPUT_FILE
+}
+
+collect_data() {
+    write_header "Hostname: $(hostname -f) Kernel: $(uname -mrs) Date: $(date)"
+}
+
+check_root
+collect_data
