@@ -3,7 +3,7 @@
 IP4_FIREWALL=/sbin/iptables
 IP6_FIREWALL=/sbin/ip6tables
 LSPCI=/usr/bin/lspci
-ROUTE=/sbin/route
+ROUTE=/sbin/route # <- TODO: Check dependencies, install if req.
 NETSTAT=/bin/netstat
 LSB=/usr/bin/lsb_release
 
@@ -19,6 +19,10 @@ check_root() {
     fi
 }
 
+setup() {
+    touch $OUTPUT_FILE
+}
+
 write_header() {
     echo "__________________________________" >> $OUTPUT_FILE
     echo "| $@" >> $OUTPUT_FILE
@@ -27,7 +31,17 @@ write_header() {
 
 collect_data() {
     write_header "Hostname: $(hostname -f) Kernel: $(uname -mrs) Date: $(date)"
+    
+    write_header "LSB"
+    ${LSB} -a >> $OUTPUT_FILE
+
+    write_header "PCI Devices"
+    ${LSPCI} -v >>$OUTPUT_FILE
+
+    write_header "Routing Table"
+    ${ROUTE} -n >>$OUTPUT_FILE
 }
 
+setup
 check_root
 collect_data
